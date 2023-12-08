@@ -1,18 +1,18 @@
 use fancy_regex::Regex;
 
 fn word_to_num(num: &str) -> usize {
-	match num {
-		"one" => 1,
-		"two" => 2,
-		"three" => 3,
-		"four" => 4,
-		"five" => 5,
-		"six" => 6,
-		"seven" => 7,
-		"eight" => 8,
-		"nine" => 9,
-		_ => 0,
-	}
+    match num {
+        "one" => 1,
+        "two" => 2,
+        "three" => 3,
+        "four" => 4,
+        "five" => 5,
+        "six" => 6,
+        "seven" => 7,
+        "eight" => 8,
+        "nine" => 9,
+        _ => 0,
+    }
 }
 
 fn run(input: &str) -> usize {
@@ -25,27 +25,33 @@ fn run(input: &str) -> usize {
     for line in parts {
         let mut all_captures = re.captures_iter(line);
 
-				let first = all_captures.nth(0).unwrap().unwrap().get(1).unwrap().as_str();
+        let first = all_captures
+            .nth(0)
+            .unwrap()
+            .unwrap()
+            .get(1)
+            .unwrap()
+            .as_str();
 
-				// There may only be one number in the string, in which case we set last to first
-				let last = match all_captures.last() {
-					Some(res) => res.unwrap().get(1).unwrap().as_str(),
-					_ => first,
-				};
+        // There may only be one number in the string, in which case we set last to first
+        let last = match all_captures.last() {
+            Some(res) => res.unwrap().get(1).unwrap().as_str(),
+            _ => first,
+        };
 
-				let first_num = match first.parse::<usize>() {
-					Ok(num) => num,
-					Err(_) => word_to_num(first)
-				};
+        let first_num = match first.parse::<usize>() {
+            Ok(num) => num,
+            Err(_) => word_to_num(first),
+        };
 
-				let last_num = match last.parse::<usize>() {
-					Ok(num) => num,
-					Err(_) => word_to_num(last)
-				};
+        let last_num = match last.parse::<usize>() {
+            Ok(num) => num,
+            Err(_) => word_to_num(last),
+        };
 
         let final_num = (first_num * 10) + last_num;
 
-				sum += final_num;
+        sum += final_num;
     }
 
     return sum;
@@ -72,13 +78,13 @@ mod tests {
         assert_eq!(result, 281)
     }
 
-		#[test]
-		fn test_ending_two_numbers() {
-			let input = r#"72bcdrcbzffkc3oneightnc"#;
-			let result = run(input);
-			println!("{}", result);
-			assert_eq!(result, 78);
-		}
+    #[test]
+    fn test_ending_two_numbers() {
+        let input = r#"72bcdrcbzffkc3oneightnc"#;
+        let result = run(input);
+        println!("{}", result);
+        assert_eq!(result, 78);
+    }
 
     #[test]
     fn test_actual() {
@@ -1090,25 +1096,25 @@ mod tests {
         assert_eq!(result, 53312)
     }
 
-		#[test]
-		fn test_word_to_num() {
-			let one = word_to_num("one");
-			assert_eq!(one, 1);
-			let two = word_to_num("two");
-			assert_eq!(two, 2);
-			let three = word_to_num("three");
-			assert_eq!(three, 3);
-			let four = word_to_num("four");
-			assert_eq!(four, 4);
-			let five = word_to_num("five");
-			assert_eq!(five, 5);
-			let six = word_to_num("six");
-			assert_eq!(six, 6);
-			let seven = word_to_num("seven");
-			assert_eq!(seven, 7);
-			let eight = word_to_num("eight");
-			assert_eq!(eight, 8);
-			let nine = word_to_num("nine");
-			assert_eq!(nine, 9);
-		}
+    #[test]
+    fn test_word_to_num() {
+        let one = word_to_num("one");
+        assert_eq!(one, 1);
+        let two = word_to_num("two");
+        assert_eq!(two, 2);
+        let three = word_to_num("three");
+        assert_eq!(three, 3);
+        let four = word_to_num("four");
+        assert_eq!(four, 4);
+        let five = word_to_num("five");
+        assert_eq!(five, 5);
+        let six = word_to_num("six");
+        assert_eq!(six, 6);
+        let seven = word_to_num("seven");
+        assert_eq!(seven, 7);
+        let eight = word_to_num("eight");
+        assert_eq!(eight, 8);
+        let nine = word_to_num("nine");
+        assert_eq!(nine, 9);
+    }
 }
