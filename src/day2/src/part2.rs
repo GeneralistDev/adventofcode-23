@@ -2,17 +2,13 @@ use std::usize;
 use std::collections::HashMap;
 use regex::Regex;
 
-fn run(input: &str) -> Option<usize> {
+fn run(input: &str) -> usize {
     let re = Regex::new(r"\s([\d]+)\s([A-Za-z]+)").unwrap();
     let lines = input.split('\n');
     let mut result: usize = 0;
 
     for line in lines {
         let mut top_level_parts = line.split(":");
-        let game = top_level_parts.next().unwrap();
-
-        let mut game_parts = game.split(" ");
-        let game_number = game_parts.nth(1).unwrap().parse::<usize>().unwrap();
 
         let mut min_colors: HashMap<&str, usize> = HashMap::from([
             ("red", 0),
@@ -20,7 +16,7 @@ fn run(input: &str) -> Option<usize> {
             ("blue", 0),
         ]);
 
-        let rounds = top_level_parts.next().unwrap().split(";");
+        let rounds = top_level_parts.nth(1).unwrap().split(";");
         for round in rounds {
             let selections = round.split(",");
             for selection in selections {
@@ -30,7 +26,7 @@ fn run(input: &str) -> Option<usize> {
                 let color = capture.get(2).unwrap().as_str();
 
                 if count > *min_colors.get(color).unwrap() {
-                    let val = min_colors.get_mut(color)?;
+                    let val = min_colors.get_mut(color).unwrap();
                     *val = count;
                 }
             }
@@ -48,7 +44,7 @@ fn run(input: &str) -> Option<usize> {
     }
 
     println!("{}", result);
-    return Some(result);
+    return result;
 }
 
 #[cfg(test)]
@@ -63,8 +59,8 @@ Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"#;
 
-        let result = run(input).unwrap();
-        assert_eq!(result, 2256);
+        let result = run(input);
+        assert_eq!(result, 2286);
     }
 
     #[test]
@@ -171,6 +167,6 @@ Game 99: 7 green, 2 red, 5 blue; 9 red, 17 green, 19 blue; 8 red, 12 blue, 1 gre
 Game 100: 4 blue, 3 green; 5 blue, 12 green; 16 green, 1 red, 1 blue; 2 blue, 1 green; 1 red, 3 blue, 18 green; 3 green, 1 red, 3 blue"#;
 
         let result = run(input);
-        assert_eq!(result, 2256);
+        assert_eq!(result, 74229);
     }
 }
